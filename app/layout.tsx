@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import { ModalProvider } from "@/providers/modal-provider";
+import { ToasterProvider } from "@/providers/toast-provider";
 
 import "./globals.css";
 
@@ -31,6 +32,7 @@ export default function RootLayout({
           <ClerkProvider>
                <html lang="en">
                     <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+                         <ToasterProvider />
                          <ModalProvider />
                          {children}
                     </body>
