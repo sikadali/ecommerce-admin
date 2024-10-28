@@ -19,8 +19,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ disabled, onChange, onRemove,
           setIsMounted(true);
      }, []);
 
-     const onUpload = (result: any) => {
-          onChange(result.info.secure_url);
+     const handleUploadResult = (result: any) => {
+          if (result?.event === "success") {
+               onChange(result.info.secure_url);
+          }
      };
 
      if (!isMounted) return null;
@@ -45,7 +47,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ disabled, onChange, onRemove,
                          </div>
                     ))}
                </div>
-               <CldUploadWidget onUpload={onUpload} uploadPreset="grrrqbfp">
+               <CldUploadWidget
+                    uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_UPLOAD_PRESET}
+                    onUpload={handleUploadResult}
+               >
                     {({ open }) => {
                          const onClick = () => {
                               open();
