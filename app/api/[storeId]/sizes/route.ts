@@ -8,7 +8,7 @@ export async function POST(req: Request, { params }: { params: { storeId: string
           const { userId } = auth();
           const body = await req.json();
 
-          const { name, billboardId } = body;
+          const { name, value } = body;
 
           // check clerk authentication
           if (!userId) {
@@ -19,8 +19,8 @@ export async function POST(req: Request, { params }: { params: { storeId: string
                return new NextResponse("Bad Request : name is required", { status: 400 });
           }
 
-          if (!billboardId) {
-               return new NextResponse("Bad Request : billboard Id is required", { status: 400 });
+          if (!value) {
+               return new NextResponse("Bad Request : value is required", { status: 400 });
           }
 
           if (!params.storeId) {
@@ -37,13 +37,13 @@ export async function POST(req: Request, { params }: { params: { storeId: string
                return new NextResponse("Unauthorized", { status: 403 });
           }
 
-          const category = await prismadb.category.create({
-               data: { name, billboardId, storeId: params.storeId },
+          const size = await prismadb.size.create({
+               data: { name, value, storeId: params.storeId },
           });
 
-          return NextResponse.json(category);
+          return NextResponse.json(size);
      } catch (error) {
-          console.log("[CATEGORIES_POST]", error);
+          console.log("[SIZES_POST]", error);
           return new NextResponse("Internal error", { status: 500 });
      }
 }
@@ -54,13 +54,13 @@ export async function GET(req: Request, { params }: { params: { storeId: string 
                return new NextResponse("Bad Request : Store Id is required", { status: 400 });
           }
 
-          const categories = await prismadb.category.findMany({
+          const sizes = await prismadb.size.findMany({
                where: { storeId: params.storeId },
           });
 
-          return NextResponse.json(categories);
+          return NextResponse.json(sizes);
      } catch (error) {
-          console.log("[CATEGORIES_GET]", error);
+          console.log("[SIZES_GET]", error);
           return new NextResponse("Internal error", { status: 500 });
      }
 }
